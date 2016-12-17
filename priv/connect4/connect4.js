@@ -9484,8 +9484,8 @@ var _user$project$Connect4$parse_xyp = F2(
 					return _elm_lang$core$Native_Utils.crashCase(
 						'Connect4',
 						{
-							start: {line: 371, column: 21},
-							end: {line: 376, column: 32}
+							start: {line: 379, column: 21},
+							end: {line: 384, column: 32}
 						},
 						_p5)(
 						A2(_elm_lang$core$Basics_ops['++'], 'Not a number: ', p));
@@ -9499,8 +9499,8 @@ var _user$project$Connect4$parse_xyp = F2(
 					return _elm_lang$core$Native_Utils.crashCase(
 						'Connect4',
 						{
-							start: {line: 363, column: 21},
-							end: {line: 368, column: 32}
+							start: {line: 371, column: 21},
+							end: {line: 376, column: 32}
 						},
 						_p7)(
 						A2(_elm_lang$core$Basics_ops['++'], 'Not a number: ', _p12));
@@ -9514,8 +9514,8 @@ var _user$project$Connect4$parse_xyp = F2(
 					return _elm_lang$core$Native_Utils.crashCase(
 						'Connect4',
 						{
-							start: {line: 355, column: 21},
-							end: {line: 360, column: 32}
+							start: {line: 363, column: 21},
+							end: {line: 368, column: 32}
 						},
 						_p9)(
 						A2(_elm_lang$core$Basics_ops['++'], 'Not a number: ', _p11));
@@ -9528,8 +9528,8 @@ var _user$project$Connect4$parse_xyp = F2(
 			return _elm_lang$core$Native_Utils.crashCase(
 				'Connect4',
 				{
-					start: {line: 351, column: 5},
-					end: {line: 381, column: 48}
+					start: {line: 359, column: 5},
+					end: {line: 389, column: 48}
 				},
 				_p4)(
 				A2(_elm_lang$core$Basics_ops['++'], 'Invalid move ', xy));
@@ -9543,14 +9543,19 @@ var _user$project$Connect4$parseMove = function (s) {
 		return _elm_lang$core$Native_Utils.crashCase(
 			'Connect4',
 			{
-				start: {line: 386, column: 5},
-				end: {line: 391, column: 47}
+				start: {line: 394, column: 5},
+				end: {line: 399, column: 47}
 			},
 			_p14)(
 			A2(_elm_lang$core$Basics_ops['++'], 'Invalid move ', s));
 	}
 };
-var _user$project$Connect4$wsAddress = 'ws://localhost:8080/websocket';
+var _user$project$Connect4$wsAddress = function (host) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'ws://',
+		A2(_elm_lang$core$Basics_ops['++'], host, '/websocket'));
+};
 var _user$project$Connect4$Model = function (a) {
 	return function (b) {
 		return function (c) {
@@ -9561,7 +9566,9 @@ var _user$project$Connect4$Model = function (a) {
 							return function (h) {
 								return function (i) {
 									return function (j) {
-										return {turn: a, index: b, board: c, winner: d, name: e, opponent: f, players: g, phase: h, move: i, info: j};
+										return function (k) {
+											return {turn: a, index: b, board: c, winner: d, name: e, opponent: f, players: g, phase: h, move: i, info: j, host: k};
+										};
 									};
 								};
 							};
@@ -9587,24 +9594,27 @@ var _user$project$Connect4$PlayOthersPh = {ctor: 'PlayOthersPh'};
 var _user$project$Connect4$SelectOpponentPh = {ctor: 'SelectOpponentPh'};
 var _user$project$Connect4$InputNamePh = {ctor: 'InputNamePh'};
 var _user$project$Connect4$NewGamePh = {ctor: 'NewGamePh'};
-var _user$project$Connect4$init = {
-	ctor: '_Tuple2',
-	_0: {
-		turn: 1,
-		index: 0,
-		board: A2(
-			_elm_lang$core$List$repeat,
-			7,
-			A2(_elm_lang$core$List$repeat, 6, 0)),
-		winner: 0,
-		name: '',
-		opponent: '',
-		players: {ctor: '[]'},
-		phase: _user$project$Connect4$NewGamePh,
-		move: '',
-		info: ''
-	},
-	_1: _elm_lang$core$Platform_Cmd$none
+var _user$project$Connect4$init = function (host) {
+	return {
+		ctor: '_Tuple2',
+		_0: {
+			turn: 1,
+			index: 0,
+			board: A2(
+				_elm_lang$core$List$repeat,
+				7,
+				A2(_elm_lang$core$List$repeat, 6, 0)),
+			winner: 0,
+			name: '',
+			opponent: '',
+			players: {ctor: '[]'},
+			phase: _user$project$Connect4$NewGamePh,
+			move: '',
+			info: '',
+			host: host
+		},
+		_1: _elm_lang$core$Platform_Cmd$none
+	};
 };
 var _user$project$Connect4$update = F2(
 	function (msg, model) {
@@ -9634,8 +9644,8 @@ var _user$project$Connect4$update = F2(
 												return _elm_lang$core$Native_Utils.crashCase(
 													'Connect4',
 													{
-														start: {line: 234, column: 46},
-														end: {line: 239, column: 56}
+														start: {line: 242, column: 46},
+														end: {line: 247, column: 56}
 													},
 													_p19)(
 													A2(_elm_lang$core$Basics_ops['++'], 'Not a number: ', _p22.val));
@@ -9676,7 +9686,10 @@ var _user$project$Connect4$update = F2(
 				return {
 					ctor: '_Tuple2',
 					_0: model,
-					_1: A2(_elm_lang$websocket$WebSocket$send, _user$project$Connect4$wsAddress, _p16._0)
+					_1: A2(
+						_elm_lang$websocket$WebSocket$send,
+						_user$project$Connect4$wsAddress(model.host),
+						_p16._0)
 				};
 			case 'InputName':
 				return {
@@ -9696,7 +9709,10 @@ var _user$project$Connect4$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{phase: _user$project$Connect4$SelectOpponentPh}),
-					_1: A2(_elm_lang$websocket$WebSocket$send, _user$project$Connect4$wsAddress, json)
+					_1: A2(
+						_elm_lang$websocket$WebSocket$send,
+						_user$project$Connect4$wsAddress(model.host),
+						json)
 				};
 			case 'Players':
 				var json = '{\'msg\':\'players\',\'game\':\'connect4\'}';
@@ -9705,7 +9721,10 @@ var _user$project$Connect4$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{phase: _user$project$Connect4$InputNamePh}),
-					_1: A2(_elm_lang$websocket$WebSocket$send, _user$project$Connect4$wsAddress, json)
+					_1: A2(
+						_elm_lang$websocket$WebSocket$send,
+						_user$project$Connect4$wsAddress(model.host),
+						json)
 				};
 			case 'Play':
 				var _p23 = _p16._0;
@@ -9718,7 +9737,10 @@ var _user$project$Connect4$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{opponent: _p23}),
-					_1: A2(_elm_lang$websocket$WebSocket$send, _user$project$Connect4$wsAddress, json)
+					_1: A2(
+						_elm_lang$websocket$WebSocket$send,
+						_user$project$Connect4$wsAddress(model.host),
+						json)
 				};
 			case 'Move':
 				var _p25 = _p16._1;
@@ -9749,7 +9771,10 @@ var _user$project$Connect4$update = F2(
 								turn: _user$project$Connect4$nextTurn(model.turn),
 								winner: _user$project$Connect4$winner(updated)
 							}),
-						_1: A2(_elm_lang$websocket$WebSocket$send, _user$project$Connect4$wsAddress, json)
+						_1: A2(
+							_elm_lang$websocket$WebSocket$send,
+							_user$project$Connect4$wsAddress(model.host),
+							json)
 					};
 				}
 			case 'QuitGame':
@@ -9759,10 +9784,13 @@ var _user$project$Connect4$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{phase: _user$project$Connect4$EndPh}),
-					_1: A2(_elm_lang$websocket$WebSocket$send, _user$project$Connect4$wsAddress, json)
+					_1: A2(
+						_elm_lang$websocket$WebSocket$send,
+						_user$project$Connect4$wsAddress(model.host),
+						json)
 				};
 			default:
-				return _user$project$Connect4$init;
+				return _user$project$Connect4$init(model.host);
 		}
 	});
 var _user$project$Connect4$Play = function (a) {
@@ -9777,7 +9805,10 @@ var _user$project$Connect4$FromServer = function (a) {
 	return {ctor: 'FromServer', _0: a};
 };
 var _user$project$Connect4$subscriptions = function (model) {
-	return A2(_elm_lang$websocket$WebSocket$listen, _user$project$Connect4$wsAddress, _user$project$Connect4$FromServer);
+	return A2(
+		_elm_lang$websocket$WebSocket$listen,
+		_user$project$Connect4$wsAddress(model.host),
+		_user$project$Connect4$FromServer);
 };
 var _user$project$Connect4$ToServer = function (a) {
 	return {ctor: 'ToServer', _0: a};
@@ -9982,7 +10013,7 @@ var _user$project$Connect4$view = function (model) {
 						{ctor: '[]'},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text('Select your oppoonent'),
+							_0: _elm_lang$html$Html$text('Select your opponent'),
 							_1: {ctor: '[]'}
 						}),
 					_1: {
@@ -10202,8 +10233,8 @@ var _user$project$Connect4$view = function (model) {
 				});
 	}
 };
-var _user$project$Connect4$main = _elm_lang$html$Html$program(
-	{init: _user$project$Connect4$init, view: _user$project$Connect4$view, update: _user$project$Connect4$update, subscriptions: _user$project$Connect4$subscriptions})();
+var _user$project$Connect4$main = _elm_lang$html$Html$programWithFlags(
+	{init: _user$project$Connect4$init, view: _user$project$Connect4$view, update: _user$project$Connect4$update, subscriptions: _user$project$Connect4$subscriptions})(_elm_lang$core$Json_Decode$string);
 
 var Elm = {};
 Elm['Connect4'] = Elm['Connect4'] || {};

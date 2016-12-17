@@ -8,9 +8,12 @@ import Json.Decode exposing (..)
 import WebSocket
 
 
-main : Program Never Model Msg
+--port host : (String -> msg) -> Sub msg
+
+
+main : Program String Model Msg
 main =
-    Html.program
+    Html.programWithFlags
         { init = init
         , view = view
         , update = update
@@ -56,7 +59,10 @@ type alias Model =
     , move :
         String
         -- local info message
-    , info : String
+    , info :
+        String
+        -- server address
+    , host : String
     }
 
 
@@ -72,8 +78,8 @@ type Msg
     | Play String
 
 
-init : ( Model, Cmd Msg )
-init =
+init : String -> ( Model, Cmd msg )
+init host =
     ( { turn = 1
       , index = 0
       , board = (List.repeat 7 (List.repeat 6 0))
@@ -84,6 +90,7 @@ init =
       , phase = NewGamePh
       , move = ""
       , info = ""
+      , host = host
       }
     , Cmd.none
     )
@@ -122,7 +129,7 @@ view model =
         SelectOpponentPh ->
             div []
                 [ h3 []
-                    [ text ("Select your oppoonent") ]
+                    [ text ("Select your opponent") ]
                 , select
                     [ onInput Play ]
                     (option
@@ -193,14 +200,15 @@ view model =
                 ]
 
 
-wsAddress : String
-wsAddress =
-    "ws://localhost:8080/websocket"
+wsAddress : String -> String
+wsAddress host =
+    -- "ws://10.1.1.5:8080/websocket"
+    "ws://" ++ host ++ "/websocket"
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    WebSocket.listen wsAddress FromServer
+    WebSocket.listen (wsAddress model.host) FromServer
 
 
 type alias Wmsg =
@@ -273,7 +281,7 @@ update msg model =
                 ( m, Cmd.none )
 
         ToServer s ->
-            ( model, WebSocket.send wsAddress s )
+            ( model, WebSocket.send (wsAddress model.host) s )
 
         InputName s ->
             ( { model | name = s }, Cmd.none )
@@ -284,7 +292,7 @@ update msg model =
                     "{'msg':'join','game':'connect4','player':'" ++ model.name ++ "'}"
             in
                 ( { model | phase = SelectOpponentPh }
-                , WebSocket.send wsAddress json
+                , WebSocket.send (wsAddress model.host) json
                 )
 
         Players n ->
@@ -293,7 +301,7 @@ update msg model =
                     "{'msg':'players','game':'connect4'}"
             in
                 ( { model | phase = InputNamePh }
-                , WebSocket.send wsAddress json
+                , WebSocket.send (wsAddress model.host) json
                 )
 
         Play s ->
@@ -302,7 +310,7 @@ update msg model =
                     "{'msg':'start','players': ['" ++ s ++ "']}"
             in
                 ( { model | opponent = s }
-                , WebSocket.send wsAddress json
+                , WebSocket.send (wsAddress model.host) json
                 )
 
         Move x y ->
@@ -326,7 +334,7 @@ update msg model =
                                 , turn = nextTurn model.turn
                                 , winner = winner updated
                               }
-                            , WebSocket.send wsAddress json
+                            , WebSocket.send (wsAddress model.host) json
                             )
 
         QuitGame ->
@@ -335,11 +343,11 @@ update msg model =
                     "{'msg':'quit'}"
             in
                 ( { model | phase = EndPh }
-                , WebSocket.send wsAddress json
+                , WebSocket.send (wsAddress model.host) json
                 )
 
         Reset ->
-            init
+            init model.host
 
 
 
