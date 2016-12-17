@@ -1,0 +1,154 @@
+<html>
+    <head>
+        <script type="text/javascript" src="/priv/connect4/connect4.js"></script>
+        <script src="/priv/jquery.min.js"></script>
+
+    </head>
+    <body>
+        <div id="main"></div>
+
+        <script type="text/javascript">
+          
+    var node = document.getElementById('main');
+    var app = Elm.Connect4.embed(node);
+
+    app.ports.check.subscribe(function(word) {
+        console.log(word);
+        var suggestions = "received: " + word;
+        app.ports.suggestions.send(suggestions);
+    });
+
+    // games server - websocket stuff
+      
+      var websocket;
+      $(document).ready(init);
+      
+      function init() {
+          if(!("WebSocket" in window)){  
+             // ws  not supported
+          } else {
+              // we have ws
+              connect();
+          };
+      };
+
+      function connect()
+      {
+          var wsHost = "ws://" + window.location.host + "/websocket";
+          websocket = new WebSocket(wsHost);
+          console.log('Connecting to: ' +  wsHost); 
+          websocket.onopen = function(evt) { onOpen(evt) }; 
+          websocket.onclose = function(evt) { onClose(evt) }; 
+          websocket.onmessage = function(evt) { onMessage(evt) }; 
+          websocket.onerror = function(evt) { onError(evt) }; 
+      };  
+      
+      function disconnect() {
+          websocket.close();
+      }; 
+
+      function toggle_connection(){
+          if(websocket.readyState == websocket.OPEN){
+              disconnect();
+          } else {
+              connect();
+          };
+      };
+      var name;
+      function join(name) {
+          var msg = JSON.stringify({msg:"join", game:"connect4", player: name})
+          sendTxt(msg);
+      }
+
+     //var players =[];
+     function start(names){
+          var msg = JSON.stringify({msg:"start", players: names})
+          sendTxt(msg);
+     }
+
+     function move(m){
+          var msg = JSON.stringify({msg:"move", move:m})
+          sendTxt(msg);
+     }
+
+    function quit(){
+          var msg = JSON.stringify({msg:"quit"})
+          sendTxt(msg);
+     }     
+      function sendTxt(msg) {
+          if(websocket.readyState == websocket.OPEN){
+              websocket.send(msg);
+              console.log('sending: ' + msg); 
+          } else {
+               console.log('websocket is not connected'); 
+          };
+      };
+
+      function onOpen(evt) { 
+          console.log('CONNECTED'); 
+      };  
+
+      function onClose(evt) { 
+          console.log('DISCONNECTED');
+      };  
+
+      function onMessage(evt) {
+          if(evt.data){
+            var msg = JSON.parse(evt.data); 
+            switch(msg.key){
+                case "connect":
+                  break;
+                case "quit":
+                  players = [];
+                  console.log(msg.val + ' quit');
+                  break;
+                case "move":
+                    console.log("moved", msg.val[0], msg.val[1]);
+                  break;
+                case "joined":
+                  players.push(msg.val);
+                  console.log(msg.val + ' joined');
+                  break;
+                case "started":
+                  console.log(msg.val + ' started');
+                  break;
+                case "players":
+                  console.log(msg.val);
+                  break;
+                default:
+                    console.log(msg.key, msg.val);
+                  break; 
+            }
+          } 
+      };  
+
+      function onError(evt) {
+          console.log('ERROR: ' + evt.data);
+      };
+
+    </script>
+    
+
+<!--
+
+    <p>
+	  <input type='text' id="name" value="" placeholder="your name"></input>
+	  <button type="button" onclick="join();">join</button>
+	</p>
+
+    <p>
+	  <input type='text' id="names" value="" placeholder="your name"></input>
+	  <button type="button" onclick="start();">start</button>
+	</p>
+
+ <p>
+	  <button type="button" onclick="move('D4');">Move</button>
+	</p>
+
+    <p>
+	  <button type="button" onclick="quit();">quit</button>
+	</p>
+-->
+
+    </body>
+    </html>

@@ -1,0 +1,12 @@
+[{<<"cowboy">>,{pkg,<<"cowboy">>,<<"1.0.4">>},0},
+ {<<"cowlib">>,{pkg,<<"cowlib">>,<<"1.0.2">>},1},
+ {<<"gproc">>,{pkg,<<"gproc">>,<<"0.5.0">>},0},
+ {<<"jsx">>,
+  {git,"https://github.com/talentdeficit/jsx.git",
+       {ref,"3074d4865b3385a050badf7828ad31490d860df5"}},
+  0},
+ {<<"ranch">>,{pkg,<<"ranch">>,<<"1.2.1">>},1},
+ {<<"uuid">>,
+  {git,"https://github.com/avtobiff/erlang-uuid.git",
+       {ref,"585c2474afb4a597ae8c8bf6d21e5a9c73f18e0b"}},
+  0}].
