@@ -9476,16 +9476,16 @@ var _user$project$Connect4$parse_xyp = F2(
 	function (xy, p) {
 		var _p4 = A2(_elm_lang$core$String$split, ',', xy);
 		if (((_p4.ctor === '::') && (_p4._1.ctor === '::')) && (_p4._1._1.ctor === '[]')) {
-			var _p12 = _p4._1._0;
-			var _p11 = _p4._0;
+			var _p13 = _p4._1._0;
+			var _p12 = _p4._0;
 			var p2 = function () {
 				var _p5 = _elm_lang$core$String$toInt(p);
 				if (_p5.ctor === 'Err') {
 					return _elm_lang$core$Native_Utils.crashCase(
 						'Connect4',
 						{
-							start: {line: 379, column: 21},
-							end: {line: 384, column: 32}
+							start: {line: 418, column: 21},
+							end: {line: 423, column: 32}
 						},
 						_p5)(
 						A2(_elm_lang$core$Basics_ops['++'], 'Not a number: ', p));
@@ -9494,60 +9494,99 @@ var _user$project$Connect4$parse_xyp = F2(
 				}
 			}();
 			var y2 = function () {
-				var _p7 = _elm_lang$core$String$toInt(_p12);
+				var _p7 = _elm_lang$core$String$toInt(_p13);
 				if (_p7.ctor === 'Err') {
 					return _elm_lang$core$Native_Utils.crashCase(
 						'Connect4',
 						{
-							start: {line: 371, column: 21},
-							end: {line: 376, column: 32}
+							start: {line: 410, column: 21},
+							end: {line: 415, column: 32}
 						},
 						_p7)(
-						A2(_elm_lang$core$Basics_ops['++'], 'Not a number: ', _p12));
+						A2(_elm_lang$core$Basics_ops['++'], 'Not a number: ', _p13));
 				} else {
 					return _p7._0;
 				}
 			}();
 			var x2 = function () {
-				var _p9 = _elm_lang$core$String$toInt(_p11);
+				var _p9 = _elm_lang$core$String$toInt(_p12);
 				if (_p9.ctor === 'Err') {
 					return _elm_lang$core$Native_Utils.crashCase(
 						'Connect4',
 						{
-							start: {line: 363, column: 21},
-							end: {line: 368, column: 32}
+							start: {line: 402, column: 21},
+							end: {line: 407, column: 32}
 						},
 						_p9)(
-						A2(_elm_lang$core$Basics_ops['++'], 'Not a number: ', _p11));
+						A2(_elm_lang$core$Basics_ops['++'], 'Not a number: ', _p12));
 				} else {
 					return _p9._0;
 				}
 			}();
+			var _p11 = _elm_lang$core$Debug$log(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(x2),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(y2),
+						_elm_lang$core$Basics$toString(p2))));
 			return {ctor: '_Tuple3', _0: x2, _1: y2, _2: p2};
 		} else {
 			return _elm_lang$core$Native_Utils.crashCase(
 				'Connect4',
 				{
-					start: {line: 359, column: 5},
-					end: {line: 389, column: 48}
+					start: {line: 398, column: 5},
+					end: {line: 432, column: 48}
 				},
 				_p4)(
 				A2(_elm_lang$core$Basics_ops['++'], 'Invalid move ', xy));
 		}
 	});
 var _user$project$Connect4$parseMove = function (s) {
-	var _p14 = A2(_elm_lang$core$String$split, '@', s);
-	if (((_p14.ctor === '::') && (_p14._1.ctor === '::')) && (_p14._1._1.ctor === '[]')) {
-		return A2(_user$project$Connect4$parse_xyp, _p14._0, _p14._1._0);
+	var _p15 = A2(_elm_lang$core$String$split, '@', s);
+	if (((_p15.ctor === '::') && (_p15._1.ctor === '::')) && (_p15._1._1.ctor === '[]')) {
+		return A2(_user$project$Connect4$parse_xyp, _p15._0, _p15._1._0);
 	} else {
 		return _elm_lang$core$Native_Utils.crashCase(
 			'Connect4',
 			{
-				start: {line: 394, column: 5},
-				end: {line: 399, column: 47}
+				start: {line: 437, column: 5},
+				end: {line: 442, column: 47}
 			},
-			_p14)(
+			_p15)(
 			A2(_elm_lang$core$Basics_ops['++'], 'Invalid move ', s));
+	}
+};
+var _user$project$Connect4$parse_gameid_order = function (s) {
+	var _p17 = A2(_elm_lang$core$String$split, ',', s);
+	if (((_p17.ctor === '::') && (_p17._1.ctor === '::')) && (_p17._1._1.ctor === '[]')) {
+		var _p20 = _p17._1._0;
+		var o2 = function () {
+			var _p18 = _elm_lang$core$String$toInt(_p20);
+			if (_p18.ctor === 'Err') {
+				return _elm_lang$core$Native_Utils.crashCase(
+					'Connect4',
+					{
+						start: {line: 383, column: 21},
+						end: {line: 388, column: 32}
+					},
+					_p18)(
+					A2(_elm_lang$core$Basics_ops['++'], 'Not a number: ', _p20));
+			} else {
+				return _p18._0;
+			}
+		}();
+		return {ctor: '_Tuple2', _0: _p17._0, _1: o2};
+	} else {
+		return _elm_lang$core$Native_Utils.crashCase(
+			'Connect4',
+			{
+				start: {line: 379, column: 5},
+				end: {line: 393, column: 57}
+			},
+			_p17)(
+			A2(_elm_lang$core$Basics_ops['++'], 'Invalid (gameid, order)', s));
 	}
 };
 var _user$project$Connect4$wsAddress = function (host) {
@@ -9567,7 +9606,9 @@ var _user$project$Connect4$Model = function (a) {
 								return function (i) {
 									return function (j) {
 										return function (k) {
-											return {turn: a, index: b, board: c, winner: d, name: e, opponent: f, players: g, phase: h, move: i, info: j, host: k};
+											return function (l) {
+												return {turn: a, index: b, board: c, winner: d, name: e, opponent: f, players: g, phase: h, move: i, info: j, gameId: k, host: l};
+											};
 										};
 									};
 								};
@@ -9611,6 +9652,7 @@ var _user$project$Connect4$init = function (host) {
 			phase: _user$project$Connect4$NewGamePh,
 			move: '',
 			info: '',
+			gameId: '',
 			host: host
 		},
 		_1: _elm_lang$core$Platform_Cmd$none
@@ -9618,47 +9660,33 @@ var _user$project$Connect4$init = function (host) {
 };
 var _user$project$Connect4$update = F2(
 	function (msg, model) {
-		var _p16 = msg;
-		switch (_p16.ctor) {
+		var _p22 = msg;
+		switch (_p22.ctor) {
 			case 'FromServer':
 				var m = function () {
-					var _p17 = A2(_elm_lang$core$Json_Decode$decodeString, _user$project$Connect4$wsRespDecoder, _p16._0);
-					if (_p17.ctor === 'Ok') {
-						var _p22 = _p17._0;
-						var _p18 = _p22.key;
-						switch (_p18) {
+					var _p23 = A2(_elm_lang$core$Json_Decode$decodeString, _user$project$Connect4$wsRespDecoder, _p22._0);
+					if (_p23.ctor === 'Ok') {
+						var _p27 = _p23._0;
+						var _p24 = _p27.key;
+						switch (_p24) {
 							case 'joined':
 								return _elm_lang$core$Native_Utils.update(
 									model,
 									{
-										players: {ctor: '::', _0: _p22.val, _1: model.players}
+										players: {ctor: '::', _0: _p27.val, _1: model.players}
 									});
 							case 'started':
+								var _p25 = _user$project$Connect4$parse_gameid_order(_p27.val);
+								var gameId = _p25._0;
+								var order = _p25._1;
 								return _elm_lang$core$Native_Utils.update(
 									model,
-									{
-										phase: _user$project$Connect4$PlayOthersPh,
-										index: function () {
-											var _p19 = _elm_lang$core$String$toInt(_p22.val);
-											if (_p19.ctor === 'Err') {
-												return _elm_lang$core$Native_Utils.crashCase(
-													'Connect4',
-													{
-														start: {line: 242, column: 46},
-														end: {line: 247, column: 56}
-													},
-													_p19)(
-													A2(_elm_lang$core$Basics_ops['++'], 'Not a number: ', _p22.val));
-											} else {
-												return _p19._0;
-											}
-										}()
-									});
+									{phase: _user$project$Connect4$PlayOthersPh, index: order, gameId: gameId});
 							case 'move':
-								var _p21 = _user$project$Connect4$parseMove(_p22.val);
-								var x = _p21._0;
-								var y = _p21._1;
-								var t = _p21._2;
+								var _p26 = _user$project$Connect4$parseMove(_p27.val);
+								var x = _p26._0;
+								var y = _p26._1;
+								var t = _p26._2;
 								var updated = A4(_user$project$Connect4$updateBoard, x, y, t, model.board);
 								return (_elm_lang$core$Native_Utils.eq(updated, model.board) || (!_elm_lang$core$Native_Utils.eq(model.winner, 0))) ? model : _elm_lang$core$Native_Utils.update(
 									model,
@@ -9672,7 +9700,7 @@ var _user$project$Connect4$update = F2(
 									model,
 									{
 										phase: _user$project$Connect4$EndPh,
-										info: A2(_elm_lang$core$Basics_ops['++'], _p22.val, ' has terminated the game!')
+										info: A2(_elm_lang$core$Basics_ops['++'], _p27.val, ' has terminated the game!')
 									});
 							default:
 								return model;
@@ -9689,14 +9717,14 @@ var _user$project$Connect4$update = F2(
 					_1: A2(
 						_elm_lang$websocket$WebSocket$send,
 						_user$project$Connect4$wsAddress(model.host),
-						_p16._0)
+						_p22._0)
 				};
 			case 'InputName':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{name: _p16._0}),
+						{name: _p22._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'SendName':
@@ -9727,41 +9755,59 @@ var _user$project$Connect4$update = F2(
 						json)
 				};
 			case 'Play':
-				var _p23 = _p16._0;
+				var _p28 = _p22._0;
 				var json = A2(
 					_elm_lang$core$Basics_ops['++'],
-					'{\'msg\':\'start\',\'players\': [\'',
-					A2(_elm_lang$core$Basics_ops['++'], _p23, '\']}'));
+					'{\'msg\':\'start\',\'game\':\'connect4\', \'player\':\'',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						model.name,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'\', \'players\': [\'',
+							A2(_elm_lang$core$Basics_ops['++'], _p28, '\']}'))));
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{opponent: _p23}),
+						{opponent: _p28}),
 					_1: A2(
 						_elm_lang$websocket$WebSocket$send,
 						_user$project$Connect4$wsAddress(model.host),
 						json)
 				};
 			case 'Move':
-				var _p25 = _p16._1;
-				var _p24 = _p16._0;
+				var _p30 = _p22._1;
+				var _p29 = _p22._0;
 				if (!_elm_lang$core$Native_Utils.eq(model.index, model.turn)) {
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 				} else {
-					var updated = A4(_user$project$Connect4$updateBoard, _p24, _p25, model.index, model.board);
+					var updated = A4(_user$project$Connect4$updateBoard, _p29, _p30, model.index, model.board);
 					var json = A2(
 						_elm_lang$core$Basics_ops['++'],
-						'{\'msg\':\'move\',\'move\': \'',
+						'{\'msg\':\'move\', \'game_id\':\'',
 						A2(
 							_elm_lang$core$Basics_ops['++'],
-							_elm_lang$core$Basics$toString(_p24),
+							model.gameId,
 							A2(
 								_elm_lang$core$Basics_ops['++'],
-								',',
+								'\',\'move\':\'',
 								A2(
 									_elm_lang$core$Basics_ops['++'],
-									_elm_lang$core$Basics$toString(_p25),
-									'\'}'))));
+									_elm_lang$core$Basics$toString(_p29),
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										',',
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											_elm_lang$core$Basics$toString(_p30),
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												'\',\'order\':\'',
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													_elm_lang$core$Basics$toString(model.index),
+													'\'}'))))))));
 					return (_elm_lang$core$Native_Utils.eq(updated, model.board) || (!_elm_lang$core$Native_Utils.eq(model.winner, 0))) ? {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none} : {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
@@ -9778,7 +9824,16 @@ var _user$project$Connect4$update = F2(
 					};
 				}
 			case 'QuitGame':
-				var json = '{\'msg\':\'quit\'}';
+				var json = A2(
+					_elm_lang$core$Basics_ops['++'],
+					'{\'msg\':\'quit\',\'game_id\': \'',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						model.gameId,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'\',\'player\':\'',
+							A2(_elm_lang$core$Basics_ops['++'], model.name, '\'}'))));
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -9883,8 +9938,8 @@ var _user$project$Connect4$column = F2(
 	});
 var _user$project$Connect4$Reset = {ctor: 'Reset'};
 var _user$project$Connect4$view = function (model) {
-	var _p26 = model.phase;
-	switch (_p26.ctor) {
+	var _p31 = model.phase;
+	switch (_p31.ctor) {
 		case 'NewGamePh':
 			return A2(
 				_elm_lang$html$Html$div,

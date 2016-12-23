@@ -13,7 +13,7 @@ start(_Type, _Args) ->
 	Dispatch = cowboy_router:compile([
 		{'_', [
 			{"/websocket", ws_handler, []},
-			{"/:game", toppage_handler, []},
+			{"/:room", toppage_handler, []},
 			%{"/", cowboy_static, {priv_file, games, "index.html"}},
 			%{"/", cowboy_static, {file, PrivDir ++ "/index.html"}},
 			%{"/static/[...]", cowboy_static, {priv_dir, games, "static"}}

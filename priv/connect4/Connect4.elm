@@ -61,6 +61,9 @@ type alias Model =
         -- local info message
     , info :
         String
+        -- game id
+    , gameId :
+        String
         -- server address
     , host : String
     }
@@ -90,6 +93,7 @@ init host =
       , phase = NewGamePh
       , move = ""
       , info = ""
+      , gameId = ""
       , host = host
       }
     , Cmd.none
@@ -229,6 +233,10 @@ update msg model =
                     case decodeString wsRespDecoder s of
                         Ok r ->
                             case r.key of
+                                -- "players" ->
+                                --     { model
+                                --         | players = r.val
+                                --     }
                                 "joined" ->
                                     { model
                                         | players =
@@ -236,17 +244,15 @@ update msg model =
                                     }
 
                                 "started" ->
-                                    { model
-                                        | phase = PlayOthersPh
-                                        , index =
-                                            (case String.toInt r.val of
-                                                Err msg ->
-                                                    Debug.crash ("Not a number: " ++ r.val)
-
-                                                Ok val ->
-                                                    val
-                                            )
-                                    }
+                                    let
+                                        ( gameId, order ) =
+                                            parse_gameid_order r.val
+                                    in
+                                        { model
+                                            | phase = PlayOthersPh
+                                            , index = order
+                                            , gameId = gameId
+                                        }
 
                                 "move" ->
                                     let
@@ -307,7 +313,7 @@ update msg model =
         Play s ->
             let
                 json =
-                    "{'msg':'start','players': ['" ++ s ++ "']}"
+                    "{'msg':'start','game':'connect4', 'player':'" ++ model.name ++ "', 'players': ['" ++ s ++ "']}"
             in
                 ( { model | opponent = s }
                 , WebSocket.send (wsAddress model.host) json
@@ -324,7 +330,17 @@ update msg model =
                     let
                         json =
                             -- just 2 players for now
-                            "{'msg':'move','move': '" ++ toString x ++ "," ++ toString y ++ "'}"
+                            "{'msg':'move', 'game_id':'"
+                                ++ model.gameId
+                                -- ++ "','move':'1,1','order':'1'}"
+                                ++
+                                    "','move':'"
+                                ++ toString x
+                                ++ ","
+                                ++ toString y
+                                ++ "','order':'"
+                                ++ toString model.index
+                                ++ "'}"
                     in
                         if updated == model.board || model.winner /= 0 then
                             ( model, Cmd.none )
@@ -340,7 +356,11 @@ update msg model =
         QuitGame ->
             let
                 json =
-                    "{'msg':'quit'}"
+                    "{'msg':'quit','game_id': '"
+                        ++ model.gameId
+                        ++ "','player':'"
+                        ++ model.name
+                        ++ "'}"
             in
                 ( { model | phase = EndPh }
                 , WebSocket.send (wsAddress model.host) json
@@ -352,6 +372,25 @@ update msg model =
 
 
 -- helpers
+
+
+parse_gameid_order : String -> ( String, Int )
+parse_gameid_order s =
+    case String.split "," s of
+        [ id, o ] ->
+            let
+                o2 =
+                    case String.toInt o of
+                        Err msg ->
+                            Debug.crash ("Not a number: " ++ o)
+
+                        Ok val ->
+                            val
+            in
+                ( id, o2 )
+
+        _ ->
+            Debug.crash ("Invalid (gameid, order)" ++ s)
 
 
 parse_xyp : String -> String -> ( Int, Int, Int )
@@ -383,7 +422,11 @@ parse_xyp xy p =
                         Ok val ->
                             val
             in
-                ( x2, y2, p2 )
+                let
+                    _ =
+                        Debug.log (toString x2 ++ toString y2 ++ toString p2)
+                in
+                    ( x2, y2, p2 )
 
         _ ->
             Debug.crash ("Invalid move " ++ xy)
