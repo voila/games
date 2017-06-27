@@ -22,6 +22,7 @@ start(_Type, _Args) ->
 	]),
 	{ok, _} = cowboy:start_http(http, 100, [{port, 8080}],
 		[{env, [{dispatch, Dispatch}]}]),
+  error_logger:info_msg("Go to: http://<server-ip>:8080/<game-name>~n"),
 	games_sup:start_link().
 
 stop(_State) ->

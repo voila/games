@@ -142,7 +142,7 @@ code_change(_OldVsn, State, _Extra) ->
 %%%===================================================================
 bc({move, Move, Order}, Players) ->
     error_logger:info_msg(">>> {move, ~p, ~p} --> ~p", [Move,Order, Players]),
-    % Msg = [{<<"key">>, <<"joined">>}, {<<"val">>, Name}],
+    % {move, <<"1,1">>, <<"1">>} --> [{<<"K">>,<0.279.0>},{<<"NK">>,<0.276.0>}]
     [P ! {move, Move, Order} || {_,P} <- Players];
 
 bc({quit, GameId, Name}, Players) ->

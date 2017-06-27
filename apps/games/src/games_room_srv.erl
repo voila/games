@@ -93,7 +93,7 @@ handle_call({join, Name}, {Pid, _Ref}, #state{players=Players}=State) ->
     {reply, Reply, State#state{players=Players2}};
 
 handle_call({start, Name, Names}, _From, #state{players=Players}=State) ->
-    GameId = list_to_binary(uuid:to_string(uuid:uuid4())),
+    GameId = list_to_binary(uuid:uuid_to_string(uuid:get_v4())),
     {Reply, Players2} = 
     case lists:all(fun(N) -> name_uniq(N, Players) end, Names) of
         false -> {{error, <<"Opponent unavailable!">>}, Players};
