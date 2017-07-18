@@ -8,6 +8,8 @@
 
 open ```http://localhost:8080/connect4``` in 2 browser tabs (one for each player)
 
+![GitHub Logo](/games.png)
+
 ## Overview
 
 * Serves the HTML + JS for the list of games located in ```priv``` folder
